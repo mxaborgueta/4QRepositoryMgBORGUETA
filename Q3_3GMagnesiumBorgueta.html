@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club/Organization Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        fieldset {
+            border: 1px solid #000;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        legend {
+            font-weight: bold;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: blue;
+            outline: none;
+            background-color: #f0f0f0;
+        }
+        
+        .empty-field {
+            border-color: red !important;
+            background-color: #ffe6e6 !important;
+        }
+        
+        .radio-group {
+            margin-top: 5px;
+        }
+        
+        .radio-option {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 8px 15px;
+            margin: 0 10px;
+        }
+        
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        /* Navigation Styles */
+        .nav-buttons {
+            margin-bottom: 20px;
+        }
+        
+        .nav-button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .nav-button:hover {
+            background-color: #0056b3;
+        }
+        
+        /* Results Page Styles */
+        .results-container {
+            display: none;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        
+        select {
+            width: auto;
+            padding: 5px 15px;
+        }
+        
+        .total-signup {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .empty-table {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Form Section -->
+    <div id="formSection">
+        <h1>Club/Organization Application</h1>
+        
+        <form id="clubForm">
+            <!-- Fieldset for #1-4 -->
+            <fieldset>
+                <legend>Personal Information</legend>
+                
+                <div class="form-group">
+                    <label for="studentId">
+                        1. StudentID *
+                    </label>
+                    <input type="text" id="studentId" name="studentId" required onblur="checkEmpty(this)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="fullName">
+                        2. Full Name *
+                    </label>
+                    <input type="text" id="fullName" name="fullName" required onblur="checkEmpty(this)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthday">
+                        3. Birthday *
+                    </label>
+                    <input type="date" id="birthday" name="birthday" required onblur="checkEmpty(this)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">
+                        4. Email Address *
+                    </label>
+                    <input type="email" id="email" name="email" required onblur="checkEmpty(this)">
+                </div>
+            </fieldset>
+            
+            <!-- Fieldset for #5-8 -->
+            <fieldset>
+                <legend>Contact and Program Information</legend>
+                
+                <div class="form-group">
+                    <label for="mobilePhone">
+                        5. Mobile Phone *
+                    </label>
+                    <input type="text" id="mobilePhone" name="mobilePhone" required onblur="checkEmpty(this)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="gradeLevel">
+                        6. Grade Level *
+                    </label>
+                    <select id="gradeLevel" name="gradeLevel" required onblur="checkEmpty(this)">
+                        <option value="" disabled selected>Select</option>
+                        <option value="Grade 9">Grade 9</option>
+                        <option value="Grade 10">Grade 10</option>
+                        <option value="Grade 11">Grade 11</option>
+                        <option value="Grade 12">Grade 12</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        7. Intern / Extern *
+                    </label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="intern" name="internExtern" value="Intern" required>
+                            <label for="intern">Intern</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="extern" name="internExtern" value="Extern" required>
+                            <label for="extern">Extern</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="preferredOrg">
+                        8. Preferred Organization / Club *
+                    </label>
+                    <select id="preferredOrg" name="preferredOrg" required onblur="checkEmpty(this)">
+                        <option value="" disabled selected>Select</option>
+                        <option value="Art Club">Art Club</option>
+                        <option value="Sports Club">Sports Club</option>
+                        <option value="Music Club">Music Club</option>
+                        <option value="Science Club">Science Club</option>
+                        <option value="Debate Club">Debate Club</option>
+                        <option value="Bake Club">Bake Club</option>
+                        <option value="Himig Agham">Himig Agham</option>
+                    </select>
+                </div>
+            </fieldset>
+            
+            <!-- Textarea for #9 -->
+            <div class="form-group">
+                <label for="reason">
+                    9. Why do you want to join? *
+                </label>
+                <textarea id="reason" name="reason" rows="4" required onblur="checkEmpty(this)"></textarea>
+            </div>
+            
+            <!-- Submit and Reset buttons -->
+            <div class="button-group">
+                <button type="button" id="submitBtn">Submit</button>
+                <button type="button" id="resetBtn">Reset</button>
+                <button type="button" id="viewResultsBtn">View Sign-ups</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Results Display Section -->
+    <div id="resultsSection" class="results-container">
+        <div class="nav-buttons">
+            <button class="nav-button" id="backToSignupBtn">Back to Signup</button>
+        </div>
+        
+        <div class="header">
+            <h1>Show List of Students Who Signed-Up</h1>
+        </div>
+        
+        <div class="filter-section">
+            <label for="clubFilter">Select Your Club </label>
+            <select id="clubFilter">
+                <option value="all">--- select an option ---</option>
+                <option value="Art Club">Art Club</option>
+                <option value="Sports Club">Sports Club</option>
+                <option value="Music Club">Music Club</option>
+                <option value="Science Club">Science Club</option>
+                <option value="Debate Club">Debate Club</option>
+                <option value="Bake Club">Bake Club</option>
+                <option value="Himig Agham">Himig Agham</option>
+            </select>
+        </div>
+        
+        <div class="total-signup" id="totalSignup">Total Signup : 0</div>
+        
+        <table id="signupsTable">
+            <thead>
+                <tr>
+                    <th>Club</th>
+                    <th>ID</th>
+                    <th>Fullname</th>
+                    <th>Grade</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Intern\Extern</th>
+                </tr>
+            </thead>
+            <tbody id="signupsTableBody">
+                <!-- Table rows will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Initialize localStorage if empty
+        function initializeStorage() {
+            if (!localStorage.getItem('signups')) {
+                // Start with completely empty array
+                localStorage.setItem('signups', JSON.stringify([]));
+            }
+        }
+
+        // Save form data to localStorage
+        function saveToLocalStorage(formData) {
+            const signups = JSON.parse(localStorage.getItem('signups')) || [];
+            signups.push(formData);
+            localStorage.setItem('signups', JSON.stringify(signups));
+            alert('Application submitted successfully!');
+            resetForm();
+            updateTotalSignups();
+        }
+
+        // Get all signups from localStorage
+        function getSignups() {
+            return JSON.parse(localStorage.getItem('signups')) || [];
+        }
+
+        // Update total signups count
+        function updateTotalSignups() {
+            const signups = getSignups();
+            document.getElementById('totalSignup').textContent = `Total Signup : ${signups.length}`;
+        }
+
+        // Display signups in table
+        function displaySignups(filterClub = 'all') {
+            const signups = getSignups();
+            const tableBody = document.getElementById('signupsTableBody');
+            tableBody.innerHTML = '';
+            
+            let filteredSignups = signups;
+            if (filterClub !== 'all') {
+                filteredSignups = signups.filter(signup => signup.club === filterClub);
+            }
+            
+            if (filteredSignups.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = `
+                    <td colspan="7" class="empty-table">No signups found. Sign up using the form above!</td>
+                `;
+                tableBody.appendChild(emptyRow);
+            } else {
+                filteredSignups.forEach(signup => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${signup.club}</td>
+                        <td>${signup.id}</td>
+                        <td>${signup.fullName}</td>
+                        <td>${signup.grade}</td>
+                        <td>${signup.email}</td>
+                        <td>${signup.mobile}</td>
+                        <td>${signup.internExtern}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+            
+            updateTotalSignups();
+        }
+
+        // Form validation and submission
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            const form = document.getElementById('clubForm');
+            
+            // Check if all required fields are filled
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (field.type === 'radio') {
+                    const radioGroup = document.getElementsByName(field.name);
+                    const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+                    if (!isChecked) {
+                        isValid = false;
+                        // Highlight radio group
+                        document.querySelectorAll(`input[name="${field.name}"]`).forEach(radio => {
+                            radio.parentElement.parentElement.style.color = 'red';
+                        });
+                    } else {
+                        document.querySelectorAll(`input[name="${field.name}"]`).forEach(radio => {
+                            radio.parentElement.parentElement.style.color = '';
+                        });
+                    }
+                } else if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('empty-field');
+                } else {
+                    field.classList.remove('empty-field');
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            if (confirm("Submit your application?")) {
+                const formData = {
+                    id: document.getElementById('studentId').value,
+                    fullName: document.getElementById('fullName').value,
+                    birthday: document.getElementById('birthday').value,
+                    email: document.getElementById('email').value,
+                    mobile: document.getElementById('mobilePhone').value,
+                    grade: document.getElementById('gradeLevel').value,
+                    internExtern: document.querySelector('input[name="internExtern"]:checked').value,
+                    club: document.getElementById('preferredOrg').value,
+                    reason: document.getElementById('reason').value
+                };
+                
+                saveToLocalStorage(formData);
+            }
+        });
+
+        // Reset form
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm("Reset the form? All data will be lost.")) {
+                resetForm();
+            }
+        });
+
+        // View results button
+        document.getElementById('viewResultsBtn').addEventListener('click', function() {
+            showResultsPage();
+        });
+
+        // Back to signup button
+        document.getElementById('backToSignupBtn').addEventListener('click', function() {
+            showFormPage();
+        });
+
+        // Club filter change
+        document.getElementById('clubFilter').addEventListener('change', function() {
+            displaySignups(this.value);
+        });
+
+        // Form field validation
+        function checkEmpty(element) {
+            if (element.value.trim() === "") {
+                element.classList.add("empty-field");
+            } else {
+                element.classList.remove("empty-field");
+            }
+        }
+
+        // Reset form function
+        function resetForm() {
+            document.getElementById('clubForm').reset();
+            const emptyFields = document.querySelectorAll('.empty-field');
+            emptyFields.forEach(field => {
+                field.classList.remove('empty-field');
+            });
+            // Reset radio button highlighting
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.parentElement.parentElement.style.color = '';
+            });
+        }
+
+        // Show results page
+        function showResultsPage() {
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+            displaySignups();
+        }
+
+        // Show form page
+        function showFormPage() {
+            document.getElementById('formSection').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeStorage();
+            updateTotalSignups();
+            // Display empty table initially
+            displaySignups();
+            
+            // Check if we should show results page from URL or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('view') === 'results') {
+                showResultsPage();
+            }
+        });
+    </script>
+</body>
+</html>
