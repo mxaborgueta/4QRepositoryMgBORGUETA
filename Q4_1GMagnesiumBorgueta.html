@@ -4,103 +4,540 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Rating</title>
+    <style>
+        /* Base styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        #formSection {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: inline-block;
+            width: 80px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"], select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 250px;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52,152,219,0.3);
+        }
+
+        .button-group {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #submitBtn {
+            background-color: #3498db;
+            color: white;
+            margin-right: 10px;
+        }
+
+        #submitBtn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        #resetBtn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        #resetBtn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        /* Star Rating System */
+        .movie-item {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .movie-item:hover {
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .movie-info {
+            flex: 1;
+        }
+
+        .movie-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .movie-year {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .movie-genre {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+
+        /* Star Rating Container */
+        .star-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stars-container {
+            display: flex;
+            gap: 2px;
+        }
+
+        .star {
+            font-size: 24px;
+            cursor: pointer;
+            color: #ddd;
+            transition: color 0.2s ease;
+            user-select: none;
+        }
+
+        .star:hover,
+        .star.active,
+        .star.filled {
+            color: #f1c40f;
+        }
+
+        .star:hover ~ .star {
+            color: #ddd;
+        }
+
+        .rating-value {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-left: 8px;
+            min-width: 45px;
+        }
+
+        /* Movie list container */
+        #movieListContainer {
+            margin-top: 20px;
+            min-height: 100px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            color: #95a5a6;
+            font-style: italic;
+            padding: 40px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #ddd;
+        }
+
+        /* Rating summary */
+        .rating-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f8ff;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+
+        .rating-summary h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .rating-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background-color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            margin-right: 5px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Delete button */
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+            background-color: #c0392b;
+        }
+    </style>
 </head>
 <body>
     <!-- Form Section -->
-     <div id = "formSection">
-        <h1>Add a Movie</h1>
+    <div id="formSection">
+        <h1>🎬 Add a Movie</h1>
 
-        <div id = "form">
-            <!-- Movie Form -->
-            <div class = "form-group">
-                <label for = "movieTitle">
-                    Title:
-                </label>
-                <input type = "text" id = "movieTitle" name = "movieTitle">
+        <div id="form">
+            <div class="form-group">
+                <label for="movieTitle">Title:</label>
+                <input type="text" id="movieTitle" name="movieTitle" placeholder="e.g., Inception">
             </div>
 
-            <div class = "form-group">
-                <label for = "year">
-                    Year:
-                </label>
-                <input type = "text" id = "year" name = "year">
+            <div class="form-group">
+                <label for="year">Year:</label>
+                <input type="text" id="year" name="year" placeholder="e.g., 2010">
             </div>
 
-            <div class = "form-group">
-                <label for = "genre">
-                    Genre:
-                </label>
-                <select id = "genre" name = "genre">
-                    <option value = "" disabled selected>Select</option>
-                    <option value = "Horror">Horror</option>
-                    <option value = "Action">Action</option>
-                    <option value = "Comedy">Comedy</option>
+            <div class="form-group">
+                <label for="genre">Genre:</label>
+                <select id="genre" name="genre">
+                    <option value="" disabled selected>Select a genre</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Action">Action</option>
+                    <option value="Comedy">Comedy</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Sci-Fi">Sci-Fi</option>
                 </select>
             </div>
 
-            <!-- Buttons -->
-             <div class = "button-group">
-                <button type = "button" id = "submitBtn">Submit</button>
-                <button type = "button" id = "resetBtn">Reset</button>
-             </div>
+            <div class="button-group">
+                <button type="button" id="submitBtn">Submit Movie</button>
+                <button type="button" id="resetBtn">Reset Form</button>
+            </div>
         </div>
 
-        <h2>Movie List</h2>
-
+        <h2>🎯 Movie List with Ratings</h2>
+        
+        <!-- Movie list container -->
+        <div id="movieListContainer"></div>
+        
+        <!-- Rating summary will be dynamically added here -->
+        <div id="ratingSummary" class="rating-summary" style="display: none;">
+            <h3>📊 Rating Summary</h3>
+            <div class="rating-stats" id="ratingStats"></div>
+        </div>
 
         <script>
-            // initialize storage
-            function initializeStorage() {
-                if (!localStorage.getItem('movies')) {
-                // Start with completely empty array
-                localStorage.setItem('movies', JSON.stringify([]));
+            (function() {
+                // ---------- INITIALIZE STORAGE ----------
+                function initializeStorage() {
+                    if (!localStorage.getItem('movies')) {
+                        localStorage.setItem('movies', JSON.stringify([]));
+                    }
                 }
-            }
+                initializeStorage();
 
-            // Save form data to localStorage
-            function saveToLocalStorage(formData) {
-                const movies = JSON.parse(localStorage.getItem('movies')) || [];
-                signups.push(formData);
-                localStorage.setItem('movies', JSON.stringify(movies));
-                alert('Application submitted successfully!');
-                resetForm();
-            }
+                // ---------- HELPER: get movies array ----------
+                function getMovies() {
+                    return JSON.parse(localStorage.getItem('movies')) || [];
+                }
 
-            function getMovies() {
-                return JSON.parse(localStorage.getItem('movies')) || [];
-            }
+                // ---------- SAVE movie to localStorage ----------
+                function saveMovieToStorage(movieData) {
+                    const movies = getMovies();
+                    movies.push(movieData);
+                    localStorage.setItem('movies', JSON.stringify(movies));
+                }
 
-            document.getElementById('submitBtn').addEventListener('click', function() {
-                const form = document.getElementById('clubForm');
-                
-                if (confirm("Submit your application?")) {
-                    const formData = {
-                        title: document.getElementById('title').value,
-                        Year: document.getElementById('year').value,
-                        birthday: document.getElementById('genre').value
-                    };
+                // ---------- UPDATE movie rating ----------
+                function updateMovieRating(index, rating) {
+                    const movies = getMovies();
+                    if (movies[index]) {
+                        movies[index].rating = rating;
+                        localStorage.setItem('movies', JSON.stringify(movies));
+                        displayMovieList(); // Refresh display
+                        updateRatingSummary(); // Update summary
+                    }
+                }
+
+                // ---------- DELETE movie ----------
+                function deleteMovie(index) {
+                    if (confirm('Are you sure you want to delete this movie?')) {
+                        const movies = getMovies();
+                        movies.splice(index, 1);
+                        localStorage.setItem('movies', JSON.stringify(movies));
+                        displayMovieList();
+                        updateRatingSummary();
+                    }
+                }
+
+                // ---------- UPDATE RATING SUMMARY ----------
+                function updateRatingSummary() {
+                    const movies = getMovies();
+                    const summaryDiv = document.getElementById('ratingSummary');
+                    const statsDiv = document.getElementById('ratingStats');
                     
-                    saveToLocalStorage(formData);
-                }
-            });
+                    if (movies.length === 0) {
+                        summaryDiv.style.display = 'none';
+                        return;
+                    }
 
-            document.getElementById('resetBtn').addEventListener('click', function() {
-                if (confirm("Reset the form? All data will be lost.")) {
-                    resetForm();
-                }
-            });
+                    // Calculate statistics
+                    const moviesWithRatings = movies.filter(m => m.rating && m.rating > 0);
+                    const avgRating = moviesWithRatings.length > 0 
+                        ? (moviesWithRatings.reduce((sum, m) => sum + m.rating, 0) / moviesWithRatings.length).toFixed(1)
+                        : 0;
+                    
+                    const ratingCounts = {5:0, 4:0, 3:0, 2:0, 1:0};
+                    movies.forEach(m => {
+                        if (m.rating && m.rating > 0) ratingCounts[m.rating]++;
+                    });
 
-            function resetForm() {
-                document.getElementById('form').reset();
-                const emptyFields = document.querySelectorAll('.empty-field');
-                emptyFields.forEach(field => {
-                    field.classList.remove('empty-field');
+                    // Create stats HTML
+                    let statsHTML = `
+                        <div class="stat-item">
+                            <span class="stat-label">Total Movies:</span>
+                            <span class="stat-value">${movies.length}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Rated:</span>
+                            <span class="stat-value">${moviesWithRatings.length}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Avg Rating:</span>
+                            <span class="stat-value">${avgRating} ⭐</span>
+                        </div>
+                    `;
+
+                    // Add rating distribution
+                    for (let i = 5; i >= 1; i--) {
+                        if (ratingCounts[i] > 0) {
+                            statsHTML += `
+                                <div class="stat-item">
+                                    <span class="stat-label">${i}★:</span>
+                                    <span class="stat-value">${ratingCounts[i]}</span>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    statsDiv.innerHTML = statsHTML;
+                    summaryDiv.style.display = 'block';
+                }
+
+                // ---------- RENDER movie list with stars ----------
+                function displayMovieList() {
+                    const movies = getMovies();
+                    const container = document.getElementById('movieListContainer');
+
+                    if (movies.length === 0) {
+                        container.innerHTML = '<div class="empty-state">🎬 No movies added yet. Use the form above to add your first movie!</div>';
+                        updateRatingSummary();
+                        return;
+                    }
+
+                    let html = '';
+                    movies.forEach((movie, index) => {
+                        const title = movie.title || movie.movieTitle || 'Unknown';
+                        const year = movie.year || '?';
+                        const genre = movie.genre || 'Not specified';
+                        const rating = movie.rating || 0;
+
+                        html += `
+                            <div class="movie-item" data-index="${index}">
+                                <div class="movie-info">
+                                    <span class="movie-title">${title}</span>
+                                    <span class="movie-year">(${year})</span>
+                                    <span class="movie-genre">${genre}</span>
+                                </div>
+                                <div class="star-rating">
+                                    <div class="stars-container" data-movie-index="${index}">
+                                `;
+                        
+                        // Generate stars (5 stars)
+                        for (let i = 1; i <= 5; i++) {
+                            const starClass = i <= rating ? 'star filled' : 'star';
+                            html += `<span class="${starClass}" data-rating="${i}">★</span>`;
+                        }
+                        
+                        html += `
+                                    </div>
+                                    <span class="rating-value">${rating > 0 ? rating + '/5' : 'Rate'}</span>
+                                    <button class="delete-btn" onclick="deleteMovieHandler(${index})">✕</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    container.innerHTML = html;
+
+                    // Add star click handlers
+                    document.querySelectorAll('.stars-container').forEach(container => {
+                        const movieIndex = container.dataset.movieIndex;
+                        const stars = container.querySelectorAll('.star');
+                        
+                        stars.forEach(star => {
+                            star.addEventListener('click', function(e) {
+                                e.stopPropagation();
+                                const rating = parseInt(this.dataset.rating);
+                                updateMovieRating(parseInt(movieIndex), rating);
+                            });
+
+                            // Add hover effect
+                            star.addEventListener('mouseenter', function() {
+                                const hoverRating = parseInt(this.dataset.rating);
+                                stars.forEach((s, i) => {
+                                    if (i < hoverRating) {
+                                        s.classList.add('active');
+                                    }
+                                });
+                            });
+
+                            star.addEventListener('mouseleave', function() {
+                                stars.forEach(s => s.classList.remove('active'));
+                            });
+                        });
+                    });
+
+                    updateRatingSummary();
+                }
+
+                // Global delete handler
+                window.deleteMovieHandler = function(index) {
+                    deleteMovie(index);
+                };
+
+                // ---------- VALIDATION ----------
+                function validateForm() {
+                    const title = document.getElementById('movieTitle').value.trim();
+                    const year = document.getElementById('year').value.trim();
+                    const genre = document.getElementById('genre').value;
+
+                    if (title === '') {
+                        alert('Please enter a movie title.');
+                        return false;
+                    }
+                    if (year === '') {
+                        alert('Please enter the year.');
+                        return false;
+                    }
+                    if (isNaN(year) || year.length !== 4) {
+                        alert('Please enter a valid 4-digit year.');
+                        return false;
+                    }
+                    if (!genre) {
+                        alert('Please select a genre.');
+                        return false;
+                    }
+                    return true;
+                }
+
+                // ---------- RESET form fields ----------
+                function resetFormFields() {
+                    document.getElementById('movieTitle').value = '';
+                    document.getElementById('year').value = '';
+                    document.getElementById('genre').selectedIndex = 0;
+                }
+
+                // ---------- EVENT: Submit button ----------
+                document.getElementById('submitBtn').addEventListener('click', function() {
+                    if (!confirm("Submit movie?")) {
+                        return;
+                    }
+
+                    if (!validateForm()) {
+                        return;
+                    }
+
+                    const formData = {
+                        title: document.getElementById('movieTitle').value.trim(),
+                        year: document.getElementById('year').value.trim(),
+                        genre: document.getElementById('genre').value,
+                        rating: 0 // Initialize with no rating
+                    };
+
+                    saveMovieToStorage(formData);
+                    alert('Movie added successfully!');
+                    resetFormFields();
+                    displayMovieList();
                 });
-                // Reset radio button highlighting
-                document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                    radio.parentElement.parentElement.style.color = '';
+
+                // ---------- EVENT: Reset button ----------
+                document.getElementById('resetBtn').addEventListener('click', function() {
+                    if (confirm("Reset the form? All unsaved data will be lost.")) {
+                        resetFormFields();
+                    }
                 });
-            }
+
+                // Initial display
+                displayMovieList();
+            })();
         </script>
-     </div>
+    </div>
 </body>
+</html>
