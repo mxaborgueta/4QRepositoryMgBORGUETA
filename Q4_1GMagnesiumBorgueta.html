@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Rating</title>
+</head>
+<body>
+    <!-- Form Section -->
+     <div id = "formSection">
+        <h1>Add a Movie</h1>
+
+        <div id = "form">
+            <!-- Movie Form -->
+            <div class = "form-group">
+                <label for = "movieTitle">
+                    Title:
+                </label>
+                <input type = "text" id = "movieTitle" name = "movieTitle">
+            </div>
+
+            <div class = "form-group">
+                <label for = "year">
+                    Year:
+                </label>
+                <input type = "text" id = "year" name = "year">
+            </div>
+
+            <div class = "form-group">
+                <label for = "genre">
+                    Genre:
+                </label>
+                <select id = "genre" name = "genre">
+                    <option value = "" disabled selected>Select</option>
+                    <option value = "Horror">Horror</option>
+                    <option value = "Action">Action</option>
+                    <option value = "Comedy">Comedy</option>
+                </select>
+            </div>
+
+            <!-- Buttons -->
+             <div class = "button-group">
+                <button type = "button" id = "submitBtn">Submit</button>
+                <button type = "button" id = "resetBtn">Reset</button>
+             </div>
+        </div>
+
+        <h2>Movie List</h2>
+
+
+        <script>
+            // initialize storage
+            function initializeStorage() {
+                if (!localStorage.getItem('movies')) {
+                // Start with completely empty array
+                localStorage.setItem('movies', JSON.stringify([]));
+                }
+            }
+
+            // Save form data to localStorage
+            function saveToLocalStorage(formData) {
+                const movies = JSON.parse(localStorage.getItem('movies')) || [];
+                signups.push(formData);
+                localStorage.setItem('movies', JSON.stringify(movies));
+                alert('Application submitted successfully!');
+                resetForm();
+            }
+
+            function getMovies() {
+                return JSON.parse(localStorage.getItem('movies')) || [];
+            }
+
+            document.getElementById('submitBtn').addEventListener('click', function() {
+                const form = document.getElementById('clubForm');
+                
+                if (confirm("Submit your application?")) {
+                    const formData = {
+                        title: document.getElementById('title').value,
+                        Year: document.getElementById('year').value,
+                        birthday: document.getElementById('genre').value
+                    };
+                    
+                    saveToLocalStorage(formData);
+                }
+            });
+
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                if (confirm("Reset the form? All data will be lost.")) {
+                    resetForm();
+                }
+            });
+
+            function resetForm() {
+                document.getElementById('form').reset();
+                const emptyFields = document.querySelectorAll('.empty-field');
+                emptyFields.forEach(field => {
+                    field.classList.remove('empty-field');
+                });
+                // Reset radio button highlighting
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.parentElement.parentElement.style.color = '';
+                });
+            }
+        </script>
+     </div>
+</body>

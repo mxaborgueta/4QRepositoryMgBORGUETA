@@ -451,17 +451,17 @@
         }
 
         // Reset form function
-        function resetForm() {
-            document.getElementById('clubForm').reset();
-            const emptyFields = document.querySelectorAll('.empty-field');
-            emptyFields.forEach(field => {
-                field.classList.remove('empty-field');
-            });
-            // Reset radio button highlighting
-            document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.parentElement.parentElement.style.color = '';
-            });
-        }
+            function resetForm() {
+                document.getElementById('clubForm').reset();
+                const emptyFields = document.querySelectorAll('.empty-field');
+                emptyFields.forEach(field => {
+                    field.classList.remove('empty-field');
+                });
+                // Reset radio button highlighting
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.parentElement.parentElement.style.color = '';
+                });
+            }
 
         // Show results page
         function showResultsPage() {
